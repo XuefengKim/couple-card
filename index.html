@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的浪漫收集册</title>
+    <style>
+        :root {
+            --main-pink: #ffafbd;
+            --soft-pink: #ffc3a0;
+            --accent-color: #ff6b6b;
+            --bg-color: #fff5f6;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #555;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 顶部看板 */
+        .dashboard {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(255, 175, 189, 0.3);
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px dashed var(--main-pink);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat-item span {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* 任务列表 */
+        .section-title {
+            align-self: flex-start;
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .task-card {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-check {
+            background: var(--main-pink);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-check:active { transform: scale(0.9); }
+
+        /* 抽卡区 */
+        #draw-btn {
+            background: linear-gradient(45deg, var(--main-pink), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            margin: 20px 0;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            display: none; /* 有抽卡机会才显示 */
+        }
+
+        /* 卡库展示 */
+        .album {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+
+        .card-slot {
+            background: #eee;
+            aspect-ratio: 3/4;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .card-active {
+            background: white;
+            border: 2px solid var(--main-pink);
+        }
+
+        .card-content {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        /* 弹窗动画 */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .new-card-anim {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h2 style="margin:0; color: var(--accent-color);">💌 专属异次元手账</h2>
+        <p style="font-size: 0.9em;">“所有的努力都会变成闪闪发光的卡片”</p>
+        <div class="stats">
+            <div class="stat-item">总打卡<span id="total-count">0</span></div>
+            <div class="stat-item">待抽卡<span id="draw-count">0</span></div>
+        </div>
+    </div>
+
+    <button id="draw-btn" onclick="drawCard()">✨ 消耗5分，抽取卡片！</button>
+
+    <div class="section-title">💕 浪漫任务</div>
+    <div class="task-card"><span>一起看电影</span><button class="btn-check" onclick="doTask('电影')">打卡</button></div>
+    <div class="task-card"><span>新餐厅打卡</span><button class="btn-check" onclick="doTask('餐厅')">打卡</button></div>
+
+    <div class="section-title">🧹 家务挑战</div>
+    <div class="task-card"><span>主动洗衣服</span><button class="btn-check" onclick="doTask('洗衣服')">打卡</button></div>
+    <div class="task-card"><span>洗碗/做饭</span><button class="btn-check" onclick="doTask('家务')">打卡</button></div>
+
+    <div class="section-title">📔 卡牌收集册</div>
+    <div class="album" id="card-album"></div>
+
+    <div id="overlay" onclick="closeOverlay()">
+        <div class="new-card-anim" id="reward-box">
+            <h1 style="color:var(--accent-color)">🎉 恭喜获得！</h1>
+            <div id="new-card-detail"></div>
+            <p style="color:#999; font-size: 0.8em; margin-top:20px;">点击任意位置关闭</p>
+        </div>
+    </div>
+
+    <script>
+        // 配置卡池
+        const cardPool = [
+            { id: 1, name: "免做家务券", rarity: "SR", desc: "本券可抵消一次你不想做的家务" },
+            { id: 2, name: "任性点单券", rarity: "SR", desc: "今天吃什么由你说了算" },
+            { id: 3, name: "专属按摩券", rarity: "SSR", desc: "兑换老婆亲手全身按摩30分钟" },
+            { id: 4, name: "清空购物车", rarity: "SSR", desc: "限额内，老婆帮你买单！" },
+            { id: 5, name: "无条件原谅", rarity: "UR", desc: "惹老婆生气时豁免一次处罚" },
+            { id: 6, name: "深夜夜宵券", rarity: "R", desc: "老婆亲手煮的面一份" }
+        ];
+
+        let userData = JSON.parse(localStorage.getItem('coupleData')) || {
+            total: 0,
+            draws: 0,
+            ownedCards: []
+        };
+
+        function updateUI() {
+            document.getElementById('total-count').innerText = userData.total;
+            document.getElementById('draw-count').innerText = userData.draws;
+            document.getElementById('draw-btn').style.display = userData.draws > 0 ? 'block' : 'none';
+            
+            const album = document.getElementById('card-album');
+            album.innerHTML = '';
+            cardPool.forEach(card => {
+                const isOwned = userData.ownedCards.includes(card.id);
+                const slot = document.createElement('div');
+                slot.className = `card-slot ${isOwned ? 'card-active' : ''}`;
+                slot.innerHTML = isOwned ? 
+                    `<div class="card-content"><b style="color:var(--accent-color)">[${card.rarity}]</b><br>${card.name}</div>` : 
+                    `<div style="color:#ccc; font-size:24px">?</div>`;
+                album.appendChild(slot);
+            });
+            localStorage.setItem('coupleData', JSON.stringify(userData));
+        }
+
+        function doTask(name) {
+            userData.total++;
+            if (userData.total % 5 === 0) {
+                userData.draws++;
+                alert('太棒了！打卡成功，获得1次抽卡机会！');
+            } else {
+                alert(`打卡成功！再打卡 ${5 - (userData.total % 5)} 次就能抽卡啦~`);
+            }
+            updateUI();
+        }
+
+        function drawCard() {
+            if (userData.draws <= 0) return;
+            userData.draws--;
+            const randomCard = cardPool[Math.floor(Math.random() * cardPool.length)];
+            
+            if (!userData.ownedCards.includes(randomCard.id)) {
+                userData.ownedCards.push(randomCard.id);
+            }
+
+            document.getElementById('new-card-detail').innerHTML = `
+                <div style="font-size: 2em; margin: 10px 0;">【${randomCard.rarity}】</div>
+                <div style="font-size: 1.5em; color: var(--accent-color);">${randomCard.name}</div>
+                <p>${randomCard.desc}</p>
+            `;
+            document.getElementById('overlay').style.display = 'flex';
+            updateUI();
+        }
+
+        function closeOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        updateUI(); // 初始化
+    </script>
+</body>
+</html>
