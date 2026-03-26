@@ -3,237 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 我们的浪漫收集册</title>
+    <title>💌 我们的浪漫收藏本</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            /* 调色盘：更高级的粉色系 */
-            --soft-pink: #fff0f3;
-            --medium-pink: #ffdae0;
-            --deep-pink: #ff85a1;
-            --accent-pink: #f72585;
-            --text-main: #6d5959;
-            --card-bg: rgba(255, 255, 255, 0.7);
+            /* 调色盘：提升饱和度和对比度 */
+            --bg-gradient: linear-gradient(135deg, #ffeef2 0%, #ffc0cb 100%);
+            --deep-pink: #d6336c; /* 深粉色，用于标题 */
+            --text-dark: #4a3737; /* 深咖啡色，用于正文，可读性更强 */
+            --accent-pink: #f72585; /* 鲜艳点缀色 */
+            --card-white: rgba(255, 255, 255, 0.9);
         }
 
         body {
             font-family: 'PingFang SC', 'STHeiti', 'Microsoft YaHei', sans-serif;
-            /* 替换为粉色渐变背景 */
-            background: linear-gradient(135deg, #fff5f6 0%, #ffdee5 100%);
+            background: var(--bg-gradient);
             background-attachment: fixed;
             margin: 0;
             padding: 30px 0 80px 0;
-            color: var(--text-main);
+            color: var(--text-dark);
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
 
-        /* 玻璃拟态看板 */
+        /* 看板 */
         .dashboard {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: var(--card-white);
             width: 88%;
             max-width: 380px;
-            padding: 30px 20px;
-            border-radius: 30px;
-            box-shadow: 0 8px 32px rgba(255, 133, 161, 0.15);
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(214, 51, 108, 0.2);
             text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 25px;
+            border: 2px solid #fff;
             box-sizing: border-box;
         }
 
         .dashboard h2 {
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
             color: var(--deep-pink);
-            font-size: 1.4em;
-            letter-spacing: 2px;
-            font-weight: 600;
+            font-size: 1.5em;
+            font-weight: bold;
         }
 
         .dashboard p {
             margin: 0;
-            font-size: 0.8em;
-            color: #a38b8b;
-            letter-spacing: 1px;
+            font-size: 0.85em;
+            color: #7d6363;
         }
 
         .stats {
             display: flex;
             justify-content: space-around;
-            margin-top: 25px;
-        }
-
-        .stat-item {
-            position: relative;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            padding: 10px 0;
         }
 
         .stat-item span {
             display: block;
-            font-size: 32px;
-            font-weight: 300; /* 细体更有高级感 */
+            font-size: 30px;
+            font-weight: bold;
             color: var(--accent-pink);
             font-family: 'Georgia', serif;
         }
 
         .stat-item p {
-            font-size: 11px;
-            margin-top: 5px;
-            color: var(--text-main);
-            opacity: 0.7;
+            font-size: 12px;
+            margin: 2px 0 0 0;
+            color: var(--deep-pink);
+            font-weight: 500;
         }
 
-        /* 极简任务卡片 */
+        /* 任务区 */
         .section-container {
             width: 88%;
             max-width: 380px;
         }
 
         .section-title {
-            font-size: 0.95em;
+            font-size: 1em;
             color: var(--deep-pink);
-            margin: 25px 0 15px 10px;
-            letter-spacing: 1px;
+            margin: 20px 0 12px 10px;
             display: flex;
             align-items: center;
-            font-weight: 600;
-        }
-
-        .section-title i {
-            font-size: 0.8em;
-            margin-right: 8px;
-            opacity: 0.6;
+            font-weight: bold;
         }
 
         .task-card {
-            background: var(--card-bg);
-            padding: 18px 20px;
-            border-radius: 20px;
-            margin-bottom: 15px;
+            background: var(--card-white);
+            padding: 15px 18px;
+            border-radius: 18px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .task-name {
             font-size: 0.95em;
-            color: #5d4d4d;
+            color: var(--text-dark);
+            font-weight: 500;
         }
 
         .btn-check {
-            background: white;
-            border: 1px solid var(--medium-pink);
-            color: var(--deep-pink);
-            padding: 7px 16px;
-            border-radius: 15px;
+            background: var(--deep-pink);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
             font-size: 0.85em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s;
         }
 
         .btn-check:disabled {
-            background: transparent;
-            color: #ccc;
-            border-color: #eee;
+            background: #d1b1b1;
+            opacity: 0.7;
         }
 
         /* 抽卡按钮 */
         #draw-btn {
-            background: var(--deep-pink);
+            background: var(--accent-pink);
             color: white;
             border: none;
-            padding: 14px 45px;
+            padding: 15px 40px;
             border-radius: 50px;
-            font-size: 1em;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 133, 161, 0.3);
+            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.4);
             display: none;
-            margin: 10px 0 30px 0;
-            transition: all 0.3s;
+            margin: 10px 0 20px 0;
         }
 
         /* 收集册 */
         .album {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 12px;
             width: 88%;
             max-width: 380px;
         }
 
         .card-slot {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             aspect-ratio: 3/4;
-            border-radius: 20px;
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px dashed var(--deep-pink);
+            box-sizing: border-box;
         }
 
         .card-active {
             background: white;
-            box-shadow: 0 10px 20px rgba(255, 182, 193, 0.2);
-            border: none;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(214, 51, 108, 0.15);
         }
 
-        .rarity-tag {
-            font-size: 0.65em;
-            padding: 2px 8px;
-            border-radius: 5px;
-            color: white;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .rarity-r { background: #bde0fe; }
-        .rarity-sr { background: #cdb4db; }
-        .rarity-ssr { background: #ffafcc; }
-        .rarity-ur { background: #fb6f92; animation: float 3s infinite ease-in-out; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* 抽卡弹窗 */
+        /* 弹窗中的实体卡片 */
         #overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 245, 246, 0.95);
+            background: rgba(0, 0, 0, 0.7);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 100;
+            backdrop-filter: blur(5px);
         }
 
-        .new-card-anim {
+        .reward-card {
+            background: white;
+            width: 280px;
+            height: 400px;
+            border-radius: 20px;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            animation: zoomIn 0.5s ease-out;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            border: 8px solid white;
+            animation: cardPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
-        .footer {
-            margin-top: 50px;
-            font-size: 0.7em;
-            color: #d1b1b1;
-            letter-spacing: 2px;
+        @keyframes cardPop {
+            from { transform: scale(0.5) rotate(10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
         }
+
+        .card-inner-border {
+            border: 2px solid var(--medium-pink);
+            flex: 1;
+            width: 100%;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+            background: linear-gradient(to bottom, #fff, #fff0f3);
+        }
+
+        .rarity-label {
+            font-size: 1.2em;
+            font-weight: 900;
+            font-family: 'serif';
+            margin-bottom: 10px;
+        }
+
+        .rarity-ur { color: #fb6f92; text-shadow: 0 0 5px rgba(251,111,146,0.3); }
+        .rarity-ssr { color: #ff85a1; }
+        .rarity-sr { color: #cdb4db; }
+        .rarity-r { color: #bde0fe; }
+
+        .footer { margin-top: 50px; font-size: 0.8em; color: var(--deep-pink); opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div class="dashboard">
-        <h2>Our Sweet Memory</h2>
-        <p>让每一份心意都有迹可循</p>
+        <h2>我们的浪漫收藏本</h2>
+        <p>收集点滴心意，兑换专属惊喜</p>
         <div class="stats">
             <div class="stat-item">
                 <span id="total-count">0</span>
@@ -250,48 +253,27 @@
 
     <div class="section-container">
         <div class="section-title"><i class="far fa-heart"></i> 浪漫任务</div>
-        <div class="task-card">
-            <span class="task-name">给老婆写一首小诗</span>
-            <button class="btn-check" id="task-poem" onclick="doTask('poem')">打卡</button>
-        </div>
-        <div class="task-card">
-            <span class="task-name">记录一次电影时光</span>
-            <button class="btn-check" id="task-movie" onclick="doTask('movie')">打卡</button>
-        </div>
-        <div class="task-card">
-            <span class="task-name">打卡一家心动餐厅</span>
-            <button class="btn-check" id="task-food" onclick="doTask('food')">打卡</button>
-        </div>
+        <div class="task-card"><span class="task-name">给老婆写一首小诗</span><button class="btn-check" id="task-poem" onclick="doTask('poem')">打卡</button></div>
+        <div class="task-card"><span class="task-name">记录一次电影时光</span><button class="btn-check" id="task-movie" onclick="doTask('movie')">打卡</button></div>
+        <div class="task-card"><span class="task-name">打卡一家心动餐厅</span><button class="btn-check" id="task-food" onclick="doTask('food')">打卡</button></div>
     </div>
 
     <div class="section-container">
         <div class="section-title"><i class="far fa-star"></i> 日常点滴</div>
-        <div class="task-card">
-            <span class="task-name">分担一次衣物洗涤</span>
-            <button class="btn-check" id="task-wash" onclick="doTask('wash')">打卡</button>
-        </div>
-        <div class="task-card">
-            <span class="task-name">承包今天的厨房</span>
-            <button class="btn-check" id="task-cook" onclick="doTask('cook')">打卡</button>
-        </div>
-        <div class="task-card">
-            <span class="task-name">顺手带走门口的垃圾</span>
-            <button class="btn-check" id="task-trash" onclick="doTask('trash')">打卡</button>
-        </div>
+        <div class="task-card"><span class="task-name">分担一次衣物洗涤</span><button class="btn-check" id="task-wash" onclick="doTask('wash')">打卡</button></div>
+        <div class="task-card"><span class="task-name">承包今天的厨房</span><button class="btn-check" id="task-cook" onclick="doTask('cook')">打卡</button></div>
+        <div class="task-card"><span class="task-name">顺手带走门口的垃圾</span><button class="btn-check" id="task-trash" onclick="doTask('trash')">打卡</button></div>
     </div>
 
-    <div class="section-container">
-        <div class="section-title"><i class="far fa-images"></i> 收集册</div>
-    </div>
-    
+    <div class="section-container"><div class="section-title"><i class="far fa-images"></i> 我的收集册</div></div>
     <div class="album" id="card-album"></div>
 
-    <div class="footer">FOR MY ONLY LOVE</div>
+    <div class="footer">始终如一的浪漫 · 2024</div>
 
     <div id="overlay" onclick="closeOverlay()">
-        <div class="new-card-anim" id="reward-box">
-            <div id="new-card-detail"></div>
-            <p style="color:#ce9393; font-size: 0.8em; margin-top:40px; letter-spacing: 2px;">点击任意位置收好这张卡片</p>
+        <div class="reward-card">
+            <div class="card-inner-border" id="card-inner-content">
+                </div>
         </div>
     </div>
 
@@ -305,7 +287,7 @@
             { id: 6, name: "爱心深夜食堂", rarity: "R", desc: "一份热腾腾的宵夜，温暖你的胃" }
         ];
 
-        let userData = JSON.parse(localStorage.getItem('coupleData_v4')) || {
+        let userData = JSON.parse(localStorage.getItem('coupleData_v5')) || {
             total: 0,
             draws: 0,
             ownedCards: {} 
@@ -325,15 +307,15 @@
                 
                 if (count > 0) {
                     slot.innerHTML = `
-                        <div class="rarity-tag rarity-${card.rarity.toLowerCase()}">${card.rarity}</div>
-                        <span style="font-weight:600; font-size:14px; color:#5d4d4d;">${card.name}</span>
-                        <span style="font-size:10px; color:#c4a4a4; margin-top:5px;">拥有数量: ${count}</span>`;
+                        <div style="font-size:10px; font-weight:900; color:var(--deep-pink)">${card.rarity}</div>
+                        <span style="font-weight:bold; font-size:13px; color:var(--text-dark); margin-top:5px;">${card.name}</span>
+                        <span style="font-size:10px; color:#c4a4a4; margin-top:3px;">x${count}</span>`;
                 } else {
-                    slot.innerHTML = `<div style="color:rgba(255,255,255,0.8); font-size:24px">?</div>`;
+                    slot.innerHTML = `<div style="color:white; font-size:24px; text-shadow: 0 0 5px #ffb6c1;">?</div>`;
                 }
                 album.appendChild(slot);
             });
-            localStorage.setItem('coupleData_v4', JSON.stringify(userData));
+            localStorage.setItem('coupleData_v5', JSON.stringify(userData));
         }
 
         function doTask(taskId) {
@@ -361,11 +343,14 @@
             const randomCard = cardPool[Math.floor(Math.random() * cardPool.length)];
             userData.ownedCards[randomCard.id] = (userData.ownedCards[randomCard.id] || 0) + 1;
 
-            document.getElementById('new-card-detail').innerHTML = `
-                <div class="rarity-tag rarity-${randomCard.rarity.toLowerCase()}" style="display:inline-block; margin-bottom:20px;">${randomCard.rarity}</div>
-                <div style="font-size: 1.8em; color: #ff85a1; font-weight:bold; margin-bottom:15px;">${randomCard.name}</div>
-                <p style="color:#8b7d7d; line-height:1.6; padding:0 20px;">${randomCard.desc}</p>
+            const content = document.getElementById('card-inner-content');
+            content.innerHTML = `
+                <div class="rarity-label rarity-${randomCard.rarity.toLowerCase()}">${randomCard.rarity}</div>
+                <div style="font-size: 1.6em; color: var(--deep-pink); font-weight:bold; margin-bottom:15px; border-bottom: 2px solid #ffeef2; padding-bottom:10px;">${randomCard.name}</div>
+                <p style="color:#7d6363; line-height:1.6; font-size: 0.95em;">${randomCard.desc}</p>
+                <div style="margin-top:20px; font-size:0.8em; color:#bbb;">- 浪漫收集册专属奖券 -</div>
             `;
+            
             document.getElementById('overlay').style.display = 'flex';
             updateUI();
         }
