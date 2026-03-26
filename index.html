@@ -10,6 +10,7 @@
             --soft-pink: #ffc3a0;
             --accent-color: #ff6b6b;
             --bg-color: #fff5f6;
+            --disabled-gray: #ccc;
         }
 
         body {
@@ -26,7 +27,7 @@
         /* 顶部看板 */
         .dashboard {
             background: white;
-            width: 90%;
+            width: 95%;
             max-width: 400px;
             padding: 20px;
             border-radius: 20px;
@@ -34,6 +35,7 @@
             text-align: center;
             margin-bottom: 20px;
             border: 2px dashed var(--main-pink);
+            box-sizing: border-box;
         }
 
         .stats {
@@ -52,7 +54,7 @@
         /* 任务列表 */
         .section-title {
             align-self: flex-start;
-            margin: 10px 0;
+            margin: 15px 0 8px 5%;
             font-size: 1.1em;
             color: var(--accent-color);
             font-weight: bold;
@@ -75,13 +77,17 @@
             background: var(--main-pink);
             border: none;
             color: white;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 20px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            min-width: 80px;
         }
 
-        .btn-check:active { transform: scale(0.9); }
+        .btn-check:disabled {
+            background: var(--disabled-gray);
+            cursor: not-allowed;
+        }
 
         /* 抽卡区 */
         #draw-btn {
@@ -94,7 +100,7 @@
             margin: 20px 0;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-            display: none; /* 有抽卡机会才显示 */
+            display: none;
         }
 
         /* 卡库展示 */
@@ -102,7 +108,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            width: 100%;
+            width: 90%;
             max-width: 400px;
             margin-top: 20px;
         }
@@ -112,6 +118,7 @@
             aspect-ratio: 3/4;
             border-radius: 10px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
@@ -125,13 +132,27 @@
             border: 2px solid var(--main-pink);
         }
 
+        .card-count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .card-content {
             text-align: center;
             padding: 10px;
-            font-size: 12px;
         }
 
-        /* 弹窗动画 */
+        /* 弹窗样式 */
         #overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -147,62 +168,62 @@
             padding: 30px;
             border-radius: 20px;
             text-align: center;
+            width: 70%;
             animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes pop {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div class="dashboard">
         <h2 style="margin:0; color: var(--accent-color);">💌 专属异次元手账</h2>
-        <p style="font-size: 0.9em;">“所有的努力都会变成闪闪发光的卡片”</p>
         <div class="stats">
             <div class="stat-item">总打卡<span id="total-count">0</span></div>
-            <div class="stat-item">待抽卡<span id="draw-count">0</span></div>
+            <div class="stat-item">可抽卡<span id="draw-count">0</span></div>
         </div>
     </div>
 
     <button id="draw-btn" onclick="drawCard()">✨ 消耗5分，抽取卡片！</button>
 
     <div class="section-title">💕 浪漫任务</div>
-    <div class="task-card"><span>一起看电影</span><button class="btn-check" onclick="doTask('电影')">打卡</button></div>
-    <div class="task-card"><span>新餐厅打卡</span><button class="btn-check" onclick="doTask('餐厅')">打卡</button></div>
+    <div class="task-card"><span>给老婆写诗</span><button class="btn-check" id="task-poem" onclick="doTask('poem')">打卡</button></div>
+    <div class="task-card"><span>一起看电影</span><button class="btn-check" id="task-movie" onclick="doTask('movie')">打卡</button></div>
+    <div class="task-card"><span>新餐厅探店</span><button class="btn-check" id="task-food" onclick="doTask('food')">打卡</button></div>
 
     <div class="section-title">🧹 家务挑战</div>
-    <div class="task-card"><span>主动洗衣服</span><button class="btn-check" onclick="doTask('洗衣服')">打卡</button></div>
-    <div class="task-card"><span>洗碗/做饭</span><button class="btn-check" onclick="doTask('家务')">打卡</button></div>
+    <div class="task-card"><span>主动洗衣服</span><button class="btn-check" id="task-wash" onclick="doTask('wash')">打卡</button></div>
+    <div class="task-card"><span>洗碗/做饭</span><button class="btn-check" id="task-cook" onclick="doTask('cook')">打卡</button></div>
+    <div class="task-card"><span>主动扔垃圾</span><button class="btn-check" id="task-trash" onclick="doTask('trash')">打卡</button></div>
 
     <div class="section-title">📔 卡牌收集册</div>
     <div class="album" id="card-album"></div>
 
     <div id="overlay" onclick="closeOverlay()">
         <div class="new-card-anim" id="reward-box">
-            <h1 style="color:var(--accent-color)">🎉 恭喜获得！</h1>
+            <h1 style="color:var(--accent-color)">🎉 获得新奖励！</h1>
             <div id="new-card-detail"></div>
-            <p style="color:#999; font-size: 0.8em; margin-top:20px;">点击任意位置关闭</p>
+            <p style="color:#999; font-size: 0.8em; margin-top:20px;">点击任意位置收回相册</p>
         </div>
     </div>
 
     <script>
-        // 配置卡池
+        // 更新后的卡池
         const cardPool = [
-            { id: 1, name: "免做家务券", rarity: "SR", desc: "本券可抵消一次你不想做的家务" },
-            { id: 2, name: "任性点单券", rarity: "SR", desc: "今天吃什么由你说了算" },
+            { id: 1, name: "陪看剧券", rarity: "SR", desc: "陪你看30分钟你爱看的剧，不许玩手机" },
+            { id: 2, name: "任性点单券", rarity: "SR", desc: "今天吃什么由你说了算，老婆买单" },
             { id: 3, name: "专属按摩券", rarity: "SSR", desc: "兑换老婆亲手全身按摩30分钟" },
-            { id: 4, name: "清空购物车", rarity: "SSR", desc: "限额内，老婆帮你买单！" },
-            { id: 5, name: "无条件原谅", rarity: "UR", desc: "惹老婆生气时豁免一次处罚" },
-            { id: 6, name: "深夜夜宵券", rarity: "R", desc: "老婆亲手煮的面一份" }
+            { id: 4, name: "购物车清空券", rarity: "SSR", desc: "200元额度内，老婆帮你清空！" },
+            { id: 5, name: "森林浇水券", rarity: "UR", desc: "老婆为你浇水蚂蚁森林，见证爱情成长" },
+            { id: 6, name: "深夜夜宵券", rarity: "R", desc: "老婆亲手煮的面或爱心宵夜一份" }
         ];
 
-        let userData = JSON.parse(localStorage.getItem('coupleData')) || {
+        // 核心数据结构：使用对象存储卡牌数量 {卡片ID: 数量}
+        let userData = JSON.parse(localStorage.getItem('coupleData_v2')) || {
             total: 0,
             draws: 0,
-            ownedCards: []
+            ownedCards: {} 
         };
 
         function updateUI() {
@@ -213,41 +234,67 @@
             const album = document.getElementById('card-album');
             album.innerHTML = '';
             cardPool.forEach(card => {
-                const isOwned = userData.ownedCards.includes(card.id);
+                const count = userData.ownedCards[card.id] || 0;
                 const slot = document.createElement('div');
-                slot.className = `card-slot ${isOwned ? 'card-active' : ''}`;
-                slot.innerHTML = isOwned ? 
-                    `<div class="card-content"><b style="color:var(--accent-color)">[${card.rarity}]</b><br>${card.name}</div>` : 
-                    `<div style="color:#ccc; font-size:24px">?</div>`;
+                slot.className = `card-slot ${count > 0 ? 'card-active' : ''}`;
+                
+                if (count > 0) {
+                    slot.innerHTML = `
+                        <div class="card-count">x${count}</div>
+                        <div class="card-content">
+                            <b style="color:var(--accent-color); font-size:10px;">[${card.rarity}]</b><br>
+                            <span style="font-weight:bold; font-size:13px;">${card.name}</span>
+                        </div>`;
+                } else {
+                    slot.innerHTML = `<div style="color:#ccc; font-size:24px">?</div>`;
+                }
                 album.appendChild(slot);
             });
-            localStorage.setItem('coupleData', JSON.stringify(userData));
+            localStorage.setItem('coupleData_v2', JSON.stringify(userData));
         }
 
-        function doTask(name) {
+        function doTask(taskId) {
+            const btn = document.getElementById('task-' + taskId);
+            
+            // 增加总进度
             userData.total++;
             if (userData.total % 5 === 0) {
                 userData.draws++;
-                alert('太棒了！打卡成功，获得1次抽卡机会！');
-            } else {
-                alert(`打卡成功！再打卡 ${5 - (userData.total % 5)} 次就能抽卡啦~`);
             }
+            
+            // 冷却逻辑 (60秒)
+            btn.disabled = true;
+            let timeLeft = 60;
+            btn.innerText = timeLeft + 's';
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.innerText = '打卡';
+                } else {
+                    btn.innerText = timeLeft + 's';
+                }
+            }, 1000);
+
             updateUI();
         }
 
         function drawCard() {
             if (userData.draws <= 0) return;
             userData.draws--;
+            
             const randomCard = cardPool[Math.floor(Math.random() * cardPool.length)];
             
-            if (!userData.ownedCards.includes(randomCard.id)) {
-                userData.ownedCards.push(randomCard.id);
-            }
+            // 增加拥有数量
+            userData.ownedCards[randomCard.id] = (userData.ownedCards[randomCard.id] || 0) + 1;
 
             document.getElementById('new-card-detail').innerHTML = `
-                <div style="font-size: 2em; margin: 10px 0;">【${randomCard.rarity}】</div>
-                <div style="font-size: 1.5em; color: var(--accent-color);">${randomCard.name}</div>
-                <p>${randomCard.desc}</p>
+                <div style="font-size: 1.5em; margin: 10px 0;">【${randomCard.rarity}】</div>
+                <div style="font-size: 1.8em; color: var(--accent-color); font-weight:bold;">${randomCard.name}</div>
+                <p style="padding:10px;">${randomCard.desc}</p>
+                <div style="font-weight:bold">当前拥有：x${userData.ownedCards[randomCard.id]}</div>
             `;
             document.getElementById('overlay').style.display = 'flex';
             updateUI();
@@ -257,7 +304,7 @@
             document.getElementById('overlay').style.display = 'none';
         }
 
-        updateUI(); // 初始化
+        updateUI();
     </script>
 </body>
 </html>
